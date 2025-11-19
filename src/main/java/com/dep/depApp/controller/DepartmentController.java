@@ -5,7 +5,9 @@ import com.dep.depApp.DTO.ResponseDepartmentDto;
 import com.dep.depApp.Service.DepartmentService;
 import com.dep.depApp.entity.Department;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.StreamingHttpOutputMessage;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -53,10 +55,10 @@ public class DepartmentController {
       }
       return ResponseEntity.ok(true);
     }
-
+    @PatchMapping("/{id}")
     public ResponseEntity<ResponseDepartmentDto>updatePartially(@RequestBody Map<String,Object>mp ,@PathVariable long id)
     {
         ResponseDepartmentDto responseDepartmentDto=departmentService.updatePartially(mp,id);
-        return null;
+        return new ResponseEntity<>(responseDepartmentDto,HttpStatus.OK);
     }
 }
