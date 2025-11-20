@@ -1,5 +1,4 @@
 package com.dep.depApp.entity;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,17 +7,13 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Department {
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
