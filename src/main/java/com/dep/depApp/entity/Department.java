@@ -12,14 +12,14 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="department",
-uniqueConstraints = {
-        @UniqueConstraint(name="role_unique",columnNames = {"roles"})
-},
-indexes={
-        @Index(name="roles_index",columnList = "roles")
-        }
-        )
+//@Table(name="department",
+//uniqueConstraints = {
+//        @UniqueConstraint(name="role_unique",columnNames = {"roles"})
+//},
+//indexes={
+//        @Index(name="roles_index",columnList = "roles")
+//        }
+//        )
 public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

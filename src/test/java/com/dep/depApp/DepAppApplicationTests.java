@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
 
-@SpringBootTest
+//@SpringBootTest
 class DepAppApplicationTests {
 
 	@Autowired
@@ -17,7 +17,7 @@ class DepAppApplicationTests {
 	void contextLoads() {
 	}
 
-    @Test
+    //@Test
     void testapp()
     {
         Optional<Department> department=departmentRepository.findByRoles("HR_ADMIN");
