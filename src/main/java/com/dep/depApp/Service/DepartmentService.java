@@ -6,6 +6,9 @@ import com.dep.depApp.entity.Department;
 import com.dep.depApp.repository.DepartmentRepository;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.ReflectionUtils;
 import org.modelmapper.ModelMapper;
 //import org.springframework.data.util.ReflectionUtils;
@@ -18,7 +21,7 @@ import java.util.stream.Collectors;
 import org.springframework.util.ReflectionUtils;
 @Service
 @RequiredArgsConstructor
-public class DepartmentService {
+public class DepartmentService{
 
     private final ModelMapper mp;
     private final DepartmentRepository departmentRepository;
@@ -101,4 +104,10 @@ public class DepartmentService {
 
         return mp.map(saved, ResponseDepartmentDto.class);
     }
+
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//       // return departmentRepository.findByRoles(username);
+//        return null;
+//    }
 }

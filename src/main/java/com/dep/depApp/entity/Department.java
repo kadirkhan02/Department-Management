@@ -2,9 +2,11 @@ package com.dep.depApp.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,6 +14,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 //@Table(name="department",
 //uniqueConstraints = {
 //        @UniqueConstraint(name="role_unique",columnNames = {"roles"})
@@ -20,10 +23,10 @@ import java.time.LocalDateTime;
 //        @Index(name="roles_index",columnList = "roles")
 //        }
 //        )
-public class Department {
+public class Department  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @Column(nullable=false ,name="Name", length = 20)
     private String name;
     private boolean isActive;
