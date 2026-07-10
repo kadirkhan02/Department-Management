@@ -1,12 +1,12 @@
 package com.dep.depApp.Service;
 
 import com.dep.depApp.entity.Department;
+import com.dep.depApp.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -26,12 +26,13 @@ public class JwtService {
     {
         return Keys.hmacShaKeyFor(jwtSecretKey.getBytes(StandardCharsets.UTF_8));
     }
-    public String generateToken(Department department)
+
+    public String generateToken(User user)
     {
         return Jwts.builder()
-                .subject(department.getId().toString())
-                .claim("name",department.getName())
-                .claim("roles", Set.of("ADMIN","ROLE"))
+                .subject(user.getId().toString())
+                .claim("name",user.getEmail())
+                //.claim("roles", Set.of("ADMIN","ROLE"))
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis()+1000*60))
                 .signWith(getSecreetKey())
