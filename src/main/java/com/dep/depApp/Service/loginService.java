@@ -2,6 +2,7 @@ package com.dep.depApp.Service;
 
 
 import com.dep.depApp.DTO.LoginDTO;
+import com.dep.depApp.DTO.TokenDTO;
 import com.dep.depApp.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +18,30 @@ public class loginService {
     private AuthenticationManager authenticationManager;
 
     private final JwtService jwtService;
-    public String login(LoginDTO loginDTO) {
+
+    private  final UserService userService;
+
+    public TokenDTO login(LoginDTO loginDTO) {
 
         Authentication authentication=authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDTO.getEmail(),loginDTO.getPassword())
         );
         User user= (User) authentication.getPrincipal();
 
-        return jwtService.generateToken(user);
+        String accessToken= jwtService.generateToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
+
+        return new TokenDTO(user.getId(), accessToken,refreshToken);
+    }
+
+    public TokenDTO refreshToken(String refreshToken) {
+
+        Long userId= jwtService.getUserIdFromToken(refreshToken);
+
+        User user=userService.findUserByID(userId);
+
+        String accessToken= jwtService.generateToken(user);
+
+        return new TokenDTO(userId,accessToken,refreshToken);
     }
 }

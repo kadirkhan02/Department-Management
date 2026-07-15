@@ -2,8 +2,11 @@ package com.dep.depApp.exceptions;
 
 
 import com.dep.depApp.exception.ResourceNotFoundException;
+import io.jsonwebtoken.JwtException;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -44,7 +47,7 @@ public class GobalResponseHandler {
         List<String>l=ex.getBindingResult()
                 .getAllErrors()
                 .stream()
-                .map(error ->error.getDefaultMessage())
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.toList());
 
         Apierror apierror=Apierror.builder()
@@ -62,6 +65,26 @@ public class GobalResponseHandler {
                 .message(exception.getMessage())
                 .build();
         return buildErrorResponseEntity(apiError);
+    }
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ApiResponse<?>> handleAuthenticationException(AuthenticationException ex)
+    {
+        Apierror apierror =Apierror.builder()
+                .status(HttpStatus.UNAUTHORIZED)
+                .message(ex.getMessage())
+                .build();
+
+        return  buildErrorResponseEntity(apierror);
+    }
+    @ExceptionHandler(JwtException.class)
+    public ResponseEntity<ApiResponse<?>> handleJwtException(JwtException ex)
+    {
+        Apierror apierror =Apierror.builder()
+                .status(HttpStatus.UNAUTHORIZED)
+                .message(ex.getMessage())
+                .build();
+
+        return  buildErrorResponseEntity(apierror);
     }
 
 
@@ -100,4 +123,6 @@ public class GobalResponseHandler {
 //        body.put("timestamp", LocalDateTime.now());
 //        return body;
 //    }
+
+
 }

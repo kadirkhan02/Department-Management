@@ -2,6 +2,7 @@ package com.dep.depApp.Service;
 
 import com.dep.depApp.DTO.*;
 import com.dep.depApp.entity.User;
+import com.dep.depApp.exception.ResourceNotFoundException;
 import com.dep.depApp.repository.UserRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -79,12 +80,21 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByEmail(username)
                 .orElseThrow(() ->
-                        new UsernameNotFoundException("User not found with email: " + username));
+                        new BadCredentialsException("User not found with email: " + username));
     }
 
     public User findUserByID(Long userId) {
 
         return userRepository.findById(userId).orElseThrow(() ->
                 new UsernameNotFoundException("User not found with id:"+ userId));
+    }
+
+    public User getByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(null);
+    }
+
+    public User save(User newUser) {
+
+        return userRepository.save(newUser);
     }
 }

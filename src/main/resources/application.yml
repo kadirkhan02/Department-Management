@@ -1,0 +1,21 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          auth0:
+             client-id: aNCujjx7GUCqBfYI7SybgPTDz1PnqeWR
+             client-secret: _eCQTYapgvwYKZAathpj2FYHp67rE570XqgaKuZohwC2DSJcVl9PkdxMa6ITPiti
+             authorization-grant-type: authorization_code
+             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+             scope:
+                 - openid
+                 - profile
+                 - email
+          github:
+            client-id: aNCujjx7GUCqBfYI7
+            client-secret: _eCQTYapgvwYKZAathpj2FYHp67rE570X
+
+        provider:
+          auth0:
+            issuer-uri: https://dev-dwymnozqlp4ghadf.us.auth0.com/
