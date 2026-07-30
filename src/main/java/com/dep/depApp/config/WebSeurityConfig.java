@@ -1,28 +1,23 @@
 package com.dep.depApp.config;
 
 
+import com.dep.depApp.enums.Permission;
 import com.dep.depApp.filters.JwtAuthFilter;
 import com.dep.depApp.handlers.OAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import static com.dep.depApp.enums.Role.ADMIN;
+import static com.dep.depApp.enums.Role.CREATOR;
 
 @Configuration
 @EnableWebSecurity
@@ -31,14 +26,20 @@ public class WebSeurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
+
+    private static final String[] publicRoutes=
+            {
+                    "/auth/**","home.html"
+            };
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**","/api/department","home.html").permitAll()
-//                        .requestMatchers("/api/department/getall").hasRole("admin")
-//                        .requestMatchers("/api/**").hasAnyRole("User", "admin")
+                        .requestMatchers(publicRoutes).permitAll()
+                     .requestMatchers(HttpMethod.GET, "/api/department/**").hasRole("ADMIN")
+                      .requestMatchers(HttpMethod.POST,"/api/department").hasAnyRole(ADMIN.name(),CREATOR.name())
+                        .requestMatchers(HttpMethod.GET, "/api/department/**").hasAuthority(Permission.USER_CREATE.name())
                         .anyRequest()
                         .authenticated()
 
